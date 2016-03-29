@@ -1,0 +1,85 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>CartoDB - Munzee Germany demo</title>
+  <link href="//cartodb-libs.global.ssl.fastly.net/cartodbui/assets/3.4.9/favicons/favicon.ico?1411985985" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+
+  <link href="styleguide.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="app.css" media="screen" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
+  <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script>
+  <!--[if lte IE 8]>
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v2/themes/css/cartodb.ie.css" />
+  <![endif]-->
+
+  <script>
+    var map;
+    function init(){
+      // initiate leaflet map. Change center and zoom for new demos.
+      map = new L.Map('map', { 
+        center: [10,5],
+        zoom: 3
+      })
+      var basemap = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+      }).addTo(map);
+
+      var layerUrl = 'https://team.cartodb.com/u/solutions/api/v2/viz/2df12088-f119-11e5-923d-0e31c9be1b51/viz.json';
+      var mapLayer;
+
+      cartodb.createLayer(map, layerUrl, {legends: true})
+        .addTo(map)
+        .on('done', function(layer) {
+          mapLayer = layer;//for setCartoCSS calls later
+        }).on('error', function(err) {
+          //log the error
+          console.log("an error occured: " + err);
+        });
+      $("#button").click(function() {
+        //on filter, setCartoCSS
+        //mapLayer.setCartoCSS()
+      });
+    }
+  </script>
+</head>
+
+<body onload="init()">
+  <div class='fullSize' id='map'></div>
+
+  <div id='toolbar'>
+    <div class="toolbar-info fill-blue color-white">
+      <h1 class="toolbar-title u-vspace-m">Munzee demo</h1>
+      <p>Select a user ID and capture types</p>
+    </div>
+    <div id="selectionTab">
+      <p>Select a user ID</p>
+      <div class="select-container">
+        <select id="userSelect">
+          <option value="hide">Change ID</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+      </div>
+      <p>Select a Capture Type</p>
+      <div class="select-container">
+        <select id="captureSelect">
+          <option value="hide">Change Capture</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+      </div>
+      <br>
+      <p id="button" class="button button--blue">
+        <a href="#">Visualize</a>
+      </p>
+    </div><!--selectionTab-->
+  </div>
+
+</body>
+</html>
