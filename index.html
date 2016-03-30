@@ -20,14 +20,17 @@
 
   <script>
     var map;
-    var dataArray;
-    var dataArrayTest = [{ id: 0, text: 'enhancement' }, { id: 1, text: 'bug' }, { id: 2, text: 'duplicate' }, { id: 3, text: 'invalid' }, { id: 4, text: 'wontfix' }];
+
+    function generateCartoCSS(userID, capturesArray) {
+
+    }
+
     function init(){
       
       // initiate leaflet map. Change center and zoom for new demos.
       map = new L.Map('map', { 
-        center: [10,5],
-        zoom: 3
+        center: [51,10],
+        zoom: 6
       })
       var basemap = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
@@ -46,20 +49,36 @@
         });
       $("#button").click(function() {
         console.log($("#userIDSelect").val());
+        var uid = $("#userIDSelect").val();
+
+        console.log($("#captureSelect").val());
+        var cidarray = $("#captureSelect").val();
+
         //on filter, setCartoCSS
         //mapLayer.setCartoCSS()
+        //mapLayer.setSQL(generateSQL(cidarray));
+        //mapLayer.setCartoCSS(generateCartoCSS(uid));
       });
     }
     $(document).ready(function() {
+      //first ajax for user id's
       $.ajax({
         //Call the CartoDB SQL API to get a list of creator_user_id's in a format our "select2" select box wants
         url: "https://solutions.cartodb.com/api/v2/sql?q=select%20creator_user_id%20as%20id%2Ccreator_user_id%20as%20text%2C%20count(*)%20from%20cartodb_germany%20where%20creator_user_id%20is%20not%20null%20group%20by%20id%20order%20by%20count(*)%20desc"
       }).done(function(data){
-
-        //set the "rows" attribute of our result
-        //dataArray = data.rows;
-
         $("#userIDSelect").select2({
+          //let's make the select data from the "rows" attribute of the result
+          data: data.rows
+        });
+      });
+
+      //second ajax for captures
+      $.ajax({
+        //Call the CartoDB SQL API to get a list of creator_user_id's in a format our "select2" select box wants
+        url: "https://solutions.cartodb.com/api/v2/sql?q=select%20capture_type_id%20as%20id%2Ccapture_type_id%20as%20text%2C%20count(*)%20from%20cartodb_germany%20where%20capture_type_id%20is%20not%20null%20group%20by%20id%20order%20by%20count(*)%20desc"
+      }).done(function(data){
+        $("#captureSelect").select2({
+          //let's make the select data from the "rows" attribute of the result
           data: data.rows
         });
       });
@@ -73,27 +92,18 @@
   <div id='toolbar'>
     <div class="toolbar-info fill-blue color-white">
       <h1 class="toolbar-title u-vspace-m">Munzee demo</h1>
-      <p>Select a user ID and capture types</p>
+      <p>Select a user ID and capture types to change the map style and filter. The selected user ID's munzees will re-render as red, and the selected capture types will be removed/not displayed on the map.</p>
     </div>
     <div id="selectionTab">
-      <p>Select user IDs (ordered by count, descending. Wait to load.)</p>
+      <p>Select a user ID to color red.</p>
       <div class="select-container">
-        <!--<select class="js-example-basic-single" id="userSelect">-->
-        <select id="userIDSelect" class="js-example-data-array" multiple="multiple">
-
-          <!--<option value="hide">Change ID</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>-->
+        <!--<select class="js-example-data-array" id="userSelect">-->
+        <select id="userIDSelect">
         </select>
       </div>
-      <p>Select a Capture Type</p>
+      <p>Select Capture Types to filter OFF the map.</p>
       <div class="select-container">
-        <select id="captureSelect">
-          <option value="hide">Change Capture</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
+        <select id="captureSelect" multiple="multiple">
         </select>
       </div>
       <br>
