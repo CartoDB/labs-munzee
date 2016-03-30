@@ -45,52 +45,24 @@
           console.log("an error occured: " + err);
         });
       $("#button").click(function() {
+        console.log($("#userIDSelect").val());
         //on filter, setCartoCSS
         //mapLayer.setCartoCSS()
       });
     }
     $(document).ready(function() {
       $.ajax({
-        //,creator_user_id%20as%20text
-        url: "https://solutions.cartodb.com/api/v2/sql?q=select%20creator_user_id%20as%20id%2Ccreator_user_id%20as%20text%2C%20count(*)%20from%20cartodb_germany%20group%20by%20id%20order%20by%20count(*)%20desc"
+        //Call the CartoDB SQL API to get a list of creator_user_id's in a format our "select2" select box wants
+        url: "https://solutions.cartodb.com/api/v2/sql?q=select%20creator_user_id%20as%20id%2Ccreator_user_id%20as%20text%2C%20count(*)%20from%20cartodb_germany%20where%20creator_user_id%20is%20not%20null%20group%20by%20id%20order%20by%20count(*)%20desc"
       }).done(function(data){
 
-        dataArray = data.rows;
+        //set the "rows" attribute of our result
+        //dataArray = data.rows;
 
-        $(".js-example-data-array-multiple").select2({
-          data: dataArray
+        $("#userIDSelect").select2({
+          data: data.rows
         });
       });
-
-      /*$(".js-example-data-array-multiple").select2({
-          //minimumInputLength: 3,
-          ajax: {
-              url: "https://solutions.cartodb.com/api/v2/sql",
-              dataType: 'json',
-              delay: 250,
-              data: function (term) {
-                console.log(term.term);
-                  return {
-                      q: "select%20distinct%20creator_user_id%20as%20id,creator_user_id%20as%20text%20from%20cartodb_germany WHERE creator_user_id = " + term.term,
-                  };
-              },
-              results: function (data) {return { results: data.rows, text: 'text'}; },
-              formatResult: function(item) { return item.text; }, 
-              formatSelection: function(item) { return item.text; }
-          }
-      });
-      /*var dataArray
-      console.log("hello ajax")
-      $.ajax({
-        //,creator_user_id%20as%20text
-        url: "https://solutions.cartodb.com/api/v2/sql?q=select%20distinct%20creator_user_id%20as%20id,creator_user_id%20as%20text%20from%20cartodb_germany"
-      }).done(function(data){
-        console.log("goodbye ajax")
-        dataArray = data.rows
-        $(".js-example-data-array-multiple").select2({
-          data: dataArray
-        });
-      });*/
     });
   </script>
 </head>
@@ -107,7 +79,8 @@
       <p>Select user IDs (ordered by count, descending. Wait to load.)</p>
       <div class="select-container">
         <!--<select class="js-example-basic-single" id="userSelect">-->
-        <select class="js-example-data-array-multiple" multiple="multiple">
+        <select id="userIDSelect" class="js-example-data-array" multiple="multiple">
+
           <!--<option value="hide">Change ID</option>
           <option value="1">1</option>
           <option value="2">2</option>
