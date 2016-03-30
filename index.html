@@ -12,13 +12,18 @@
   <link href="app.css" media="screen" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
   <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js"></script>
   <!--[if lte IE 8]>
     <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v2/themes/css/cartodb.ie.css" />
   <![endif]-->
 
   <script>
     var map;
+    var dataArray;
+    var dataArrayTest = [{ id: 0, text: 'enhancement' }, { id: 1, text: 'bug' }, { id: 2, text: 'duplicate' }, { id: 3, text: 'invalid' }, { id: 4, text: 'wontfix' }];
     function init(){
+      
       // initiate leaflet map. Change center and zoom for new demos.
       map = new L.Map('map', { 
         center: [10,5],
@@ -44,6 +49,49 @@
         //mapLayer.setCartoCSS()
       });
     }
+    $(document).ready(function() {
+      $.ajax({
+        //,creator_user_id%20as%20text
+        url: "https://solutions.cartodb.com/api/v2/sql?q=select%20creator_user_id%20as%20id%2Ccreator_user_id%20as%20text%2C%20count(*)%20from%20cartodb_germany%20group%20by%20id%20order%20by%20count(*)%20desc"
+      }).done(function(data){
+
+        dataArray = data.rows;
+
+        $(".js-example-data-array-multiple").select2({
+          data: dataArray
+        });
+      });
+
+      /*$(".js-example-data-array-multiple").select2({
+          //minimumInputLength: 3,
+          ajax: {
+              url: "https://solutions.cartodb.com/api/v2/sql",
+              dataType: 'json',
+              delay: 250,
+              data: function (term) {
+                console.log(term.term);
+                  return {
+                      q: "select%20distinct%20creator_user_id%20as%20id,creator_user_id%20as%20text%20from%20cartodb_germany WHERE creator_user_id = " + term.term,
+                  };
+              },
+              results: function (data) {return { results: data.rows, text: 'text'}; },
+              formatResult: function(item) { return item.text; }, 
+              formatSelection: function(item) { return item.text; }
+          }
+      });
+      /*var dataArray
+      console.log("hello ajax")
+      $.ajax({
+        //,creator_user_id%20as%20text
+        url: "https://solutions.cartodb.com/api/v2/sql?q=select%20distinct%20creator_user_id%20as%20id,creator_user_id%20as%20text%20from%20cartodb_germany"
+      }).done(function(data){
+        console.log("goodbye ajax")
+        dataArray = data.rows
+        $(".js-example-data-array-multiple").select2({
+          data: dataArray
+        });
+      });*/
+    });
   </script>
 </head>
 
@@ -56,13 +104,14 @@
       <p>Select a user ID and capture types</p>
     </div>
     <div id="selectionTab">
-      <p>Select a user ID</p>
+      <p>Select user IDs (ordered by count, descending. Wait to load.)</p>
       <div class="select-container">
-        <select id="userSelect">
-          <option value="hide">Change ID</option>
+        <!--<select class="js-example-basic-single" id="userSelect">-->
+        <select class="js-example-data-array-multiple" multiple="multiple">
+          <!--<option value="hide">Change ID</option>
           <option value="1">1</option>
           <option value="2">2</option>
-          <option value="3">3</option>
+          <option value="3">3</option>-->
         </select>
       </div>
       <p>Select a Capture Type</p>
