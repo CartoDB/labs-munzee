@@ -20,9 +20,213 @@
 
   <script>
     var map;
+    var defaultCartocss = "/** category visualization */\
+\
+#cartodb_germany {\
+   marker-fill-opacity: 0.9;\
+   marker-line-color: #FFF;\
+   marker-line-width: 1;\
+   marker-line-opacity: 1;\
+   marker-placement: point;\
+   marker-type: ellipse;\
+   marker-width: 10;\
+   marker-allow-overlap: true;\
+}\
+\
+#cartodb_germany[capture_type_id=0] {\
+  marker-fill: #B0245E;\
+}\
+#cartodb_germany[capture_type_id=3] {\
+  marker-fill: #29DB3A;\
+}\
+#cartodb_germany[capture_type_id=80] {\
+  marker-fill: #22ACB9;\
+}\
+#cartodb_germany[capture_type_id=1] {\
+  marker-fill: #F7AE0C;\
+}\
+#cartodb_germany[capture_type_id=52] {\
+  marker-fill: #7782F6;\
+}\
+#cartodb_germany[capture_type_id=40] {\
+  marker-fill: #434509;\
+}\
+#cartodb_germany[capture_type_id=71] {\
+  marker-fill: #FEDEA6;\
+}\
+#cartodb_germany[capture_type_id=53] {\
+  marker-fill: #CC3703;\
+}\
+#cartodb_germany[capture_type_id=70] {\
+  marker-fill: #FE3FD2;\
+}\
+#cartodb_germany[capture_type_id=440] {\
+  marker-fill: #053A65;\
+}\
+#cartodb_germany[capture_type_id=131] {\
+  marker-fill: #F194DB;\
+}\
+#cartodb_germany[capture_type_id=218] {\
+  marker-fill: #A8F6B0;\
+}\
+#cartodb_germany[capture_type_id=140] {\
+  marker-fill: #EB8B8B;\
+}\
+#cartodb_germany[capture_type_id=6] {\
+  marker-fill: #EECBDE;\
+}\
+#cartodb_germany[capture_type_id=170] {\
+  marker-fill: #928C1C;\
+}\
+#cartodb_germany[capture_type_id=353] {\
+  marker-fill: #813EA3;\
+}\
+#cartodb_germany[capture_type_id=400] {\
+  marker-fill: #1485C2;\
+}\
+#cartodb_germany[capture_type_id=250] {\
+  marker-fill: #0B241B;\
+}\
+#cartodb_germany[capture_type_id=190] {\
+  marker-fill: #3C1536;\
+}\
+#cartodb_germany[capture_type_id=112] {\
+  marker-fill: #2A7038;\
+}\
+#cartodb_germany[capture_type_id=290] {\
+  marker-fill: #874D15;\
+}\
+#cartodb_germany[capture_type_id=103] {\
+  marker-fill: #116D65;\
+}\
+#cartodb_germany[capture_type_id=280] {\
+  marker-fill: #D6EF81;\
+}\
+#cartodb_germany[capture_type_id=390] {\
+  marker-fill: #98C9F0;\
+}\
+#cartodb_germany[capture_type_id=107] {\
+  marker-fill: #94222D;\
+}\
+#cartodb_germany[capture_type_id=119] {\
+  marker-fill: #EECB62;\
+}\
+#cartodb_germany[capture_type_id=\"\"] {\
+  marker-fill: #93F778;\
+}\
+#cartodb_germany[capture_type_id=110] {\
+  marker-fill: #84CF21;\
+}\
+#cartodb_germany[capture_type_id=113] {\
+  marker-fill: #FB27A0;\
+}\
+#cartodb_germany[capture_type_id=121] {\
+  marker-fill: #AA4EDA;\
+}\
+#cartodb_germany[capture_type_id=4] {\
+  marker-fill: #1C6882;\
+}\
+#cartodb_germany[capture_type_id=115] {\
+  marker-fill: #2D1E03;\
+}\
+#cartodb_germany[capture_type_id=105] {\
+  marker-fill: #F8D718;\
+}\
+#cartodb_germany[capture_type_id=108] {\
+  marker-fill: #B3F4D6;\
+}\
+#cartodb_germany[capture_type_id=109] {\
+  marker-fill: #F266A8;\
+}\
+#cartodb_germany[capture_type_id=470] {\
+  marker-fill: #51296F;\
+}\
+#cartodb_germany[capture_type_id=106] {\
+  marker-fill: #FAA950;\
+}\
+#cartodb_germany[capture_type_id=242] {\
+  marker-fill: #F06147;\
+}\
+#cartodb_germany[capture_type_id=104] {\
+  marker-fill: #C96318;\
+}\
+#cartodb_germany[capture_type_id=308] {\
+  marker-fill: #C6BFFB;\
+}\
+#cartodb_germany[capture_type_id=116] {\
+  marker-fill: #474AA4;\
+}\
+#cartodb_germany[capture_type_id=306] {\
+  marker-fill: #3BC6B3;\
+}\
+#cartodb_germany[capture_type_id=114] {\
+  marker-fill: #37A515;\
+}\
+#cartodb_germany[capture_type_id=312] {\
+  marker-fill: #F86978;\
+}\
+#cartodb_germany[capture_type_id=117] {\
+  marker-fill: #387312;\
+}\
+#cartodb_germany[capture_type_id=313] {\
+  marker-fill: #F7D2C3;\
+}\
+#cartodb_germany[capture_type_id=314] {\
+  marker-fill: #AB2DAC;\
+}\
+#cartodb_germany[capture_type_id=118] {\
+  marker-fill: #84260C;\
+}\
+#cartodb_germany[capture_type_id=315] {\
+  marker-fill: #74F999;\
+}\
+#cartodb_germany[capture_type_id=111] {\
+  marker-fill: #706100;\
+}\
+#cartodb_germany[capture_type_id=32] {\
+  marker-fill: #DC85E9;\
+}\
+#cartodb_germany[capture_type_id=120] {\
+  marker-fill: #3798BD;\
+}\
+#cartodb_germany[capture_type_id=307] {\
+  marker-fill: #4F2A09;\
+}\
+#cartodb_germany[capture_type_id=441] {\
+  marker-fill: #214157;\
+}\
+#cartodb_germany[capture_type_id=200] {\
+  marker-fill: #EE4A87;\
+}\
+#cartodb_germany[capture_type_id=36] {\
+  marker-fill: #F39AAE;\
+}\
+#cartodb_germany[capture_type_id=2] {\
+  marker-fill: #0C7CCD;\
+}\
+#cartodb_germany[capture_type_id=171] {\
+  marker-fill: #9A133E;\
+}\
+#cartodb_germany[capture_type_id=316] {\
+  marker-fill: #27572D;\
+}\
+#cartodb_germany[capture_type_id=2010] {\
+  marker-fill: #6A89EA;\
+}"
 
-    function generateCartoCSS(userID, capturesArray) {
-
+    function generateCartoCSS(userID) {
+      if (userID === "none") {
+        return defaultCartocss;
+      } else {
+        var newCartocss = "\
+#cartodb_germany[creator_user_id=" + userID + "] {\
+  marker-width: 25;\
+  marker-fill: #F11810;\
+}"
+        var comboCartocss = defaultCartocss + newCartocss;
+        console.log(comboCartocss);
+        return comboCartocss;
+      }
     }
 
     function init(){
@@ -42,17 +246,52 @@
       cartodb.createLayer(map, layerUrl, {legends: true})
         .addTo(map)
         .on('done', function(layer) {
-          mapLayer = layer;//for setCartoCSS calls later
+          mapSubLayer = layer.getSubLayer(0);//for setCartoCSS calls later
+          console.log(mapSubLayer);
         }).on('error', function(err) {
           //log the error
           console.log("an error occured: " + err);
         });
       $("#button").click(function() {
-        console.log($("#userIDSelect").val());
         var uid = $("#userIDSelect").val();
+        console.log(uid);
 
-        console.log($("#captureSelect").val());
         var cidarray = $("#captureSelect").val();
+        console.log(cidarray);
+
+        switch (true) {
+
+          //if user=none and capture=null, do nothing/reset to initial view
+          case (uid === "none" && cidarray === null):
+            console.log("You have not selected anything!");
+            mapSubLayer.set({
+              'sql': "SELECT * FROM cartodb_germany",
+              'cartocss': generateCartoCSS(uid)
+            })
+            break;
+
+          //if user!=none and capture=null, do cartocss
+          case (uid !== "none" && cidarray === null):
+            console.log("You selected a user but not a capture");
+            mapSubLayer.setCartoCSS(generateCartoCSS(uid));
+            break;
+
+          //if user=none and capture!=null, do sql
+          case (uid === "none" && cidarray !== null):
+            console.log("You didn't select a user but did pick capture");
+            console.log("SELECT * FROM cartodb_germany where capture_type_id not in (" + "'" + cidarray.join("','") + "')");
+            mapSubLayer.setSQL("SELECT * FROM cartodb_germany where capture_type_id not in (" + "'" + cidarray.join("','") + "')");
+            break;
+
+          //if user!=none and capture!=null, do sql and then cartocss
+          case (uid !== "none" && cidarray !== null):
+            console.log("You selected both!");
+            mapSubLayer.set({
+              'sql': "SELECT * FROM cartodb_germany where capture_type_id not in (" + "'" + cidarray.join("','") + "')",
+              'cartocss': generateCartoCSS(uid)
+            })
+            break;
+        }
 
         //on filter, setCartoCSS
         //mapLayer.setCartoCSS()
@@ -68,7 +307,8 @@
       }).done(function(data){
         $("#userIDSelect").select2({
           //let's make the select data from the "rows" attribute of the result
-          data: data.rows
+          data: data.rows,
+          placeholder: "No user selected"
         });
       });
 
@@ -79,7 +319,8 @@
       }).done(function(data){
         $("#captureSelect").select2({
           //let's make the select data from the "rows" attribute of the result
-          data: data.rows
+          data: data.rows,
+          placeholder: "No captures selected"
         });
       });
     });
@@ -92,16 +333,17 @@
   <div id='toolbar'>
     <div class="toolbar-info fill-blue color-white">
       <h1 class="toolbar-title u-vspace-m">Munzee demo</h1>
-      <p>Select a user ID and capture types to change the map style and filter. The selected user ID's munzees will re-render as red, and the selected capture types will be removed/not displayed on the map.</p>
+      <p>Select a user ID and capture types to change the map style and filter. The selected user ID's munzees will re-render as red/extra large, and the selected capture types will be removed/not displayed on the map.</p>
     </div>
     <div id="selectionTab">
-      <p>Select a user ID to color red.</p>
+      <p>Select a user ID to color red. Ordered by count descending.</p>
       <div class="select-container">
         <!--<select class="js-example-data-array" id="userSelect">-->
         <select id="userIDSelect">
+          <option value="none" selected="selected">No user selected</option>
         </select>
       </div>
-      <p>Select Capture Types to filter OFF the map.</p>
+      <p>Select Capture Types to filter OFF the map. Ordered by count descending.</p>
       <div class="select-container">
         <select id="captureSelect" multiple="multiple">
         </select>
