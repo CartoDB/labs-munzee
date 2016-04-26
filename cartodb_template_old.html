@@ -117,12 +117,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore.js"></script>
-
     <script>
 
     var map = new L.Map('map', { 
-      center: [50.9375,6.9603],
+      center: [32.7767,-96.7970],
       zoom: 14
     });
     
@@ -134,8 +132,6 @@
     var base_munzee_url = "https://api.munzee.com/map/cartodb";
     var munzee_api_values = "";
     var cartocss_url_string = "";
-    var all_pin_images = [];
-    var unique_pin_images = [];
     var layer;
     
     //WITH  temp (k,v) AS (VALUES (0,-9999), (1, 100)) 
@@ -151,35 +147,33 @@
         longitude2: bbox.getEast(),
         latitude2: bbox.getNorth()
       }).done( function(data) {
+        console.log("hello munzee");
+        console.log(data.data.length);
         var datalength = data.data.length; // will I have off by one error?
+        console.log(datalength);
+        console.log(data);
         var with_sql_query = "TRUNCATE TABLE munzeetmpeditor; INSERT INTO munzeetmpeditor (cartodb_id, the_geom, pin_image) VALUES ";
 
-        var munzee_cartocss = "#munzeetmpeditor {\
-               marker-fill-opacity: 0.9;\
-               marker-line-color: #FFF;\
-               marker-line-width: 1;\
-               marker-line-opacity: 1;\
-               marker-placement: point;\
-               marker-type: ellipse;\
-               marker-width: 10;\
-               marker-allow-overlap: true;\
-            }"
-
+    var munzee_cartocss = "#munzeetmpeditor {\
+           marker-fill-opacity: 0.9;\
+           marker-line-color: #FFF;\
+           marker-line-width: 1;\
+           marker-line-opacity: 1;\
+           marker-placement: point;\
+           marker-type: ellipse;\
+           marker-width: 10;\
+           marker-allow-overlap: true;\
+        }"
 
         $.each( data.data, function(i, item) {
-          if (datalength < 1) {
-            alert("No munzee API response for this bounding box.");
-            return;
-          } else if (i < (datalength - 1)) {
+          if (i < (datalength - 1)) {
             with_sql_query += "(" + item.munzee_id + ", ST_GEOMFROMTEXT('POINT(" + item.longitude + " " + item.latitude + ")', 4326), '" + item.pin_image + "'),";
-            all_pin_images.push(item.pin_image);
-            //munzee_cartocss += "\n#cartodb_germany[pin_image=\"" + item.pin_image + "\"]{ marker-file: url(https://munzee.global.ssl.fastly.net/images/pins/" + item.pin_image + "); marker-width: 40; marker-height: 40; }"
+            munzee_cartocss += "\n#cartodb_germany[pin_image=\"" + item.pin_image + "\"]{ marker-file: url(https://munzee.global.ssl.fastly.net/images/pins/" + item.pin_image + "); marker-width: 40; marker-height: 40; }"
           } else {
             //if (i) return;
             console.log("broke");
             with_sql_query += "(" + item.munzee_id + ", ST_GEOMFROMTEXT('POINT(" + item.longitude + " " + item.latitude + ")', 4326), '" + item.pin_image + "')";
-            all_pin_images.push(item.pin_image);
-            //munzee_cartocss += "\n#cartodb_germany[pin_image=\"" + item.pin_image + "\"]{ marker-file: url(https://munzee.global.ssl.fastly.net/images/pins/" + item.pin_image + "); marker-width: 40; marker-height: 40; }"
+            munzee_cartocss += "\n#cartodb_germany[pin_image=\"" + item.pin_image + "\"]{ marker-file: url(https://munzee.global.ssl.fastly.net/images/pins/" + item.pin_image + "); marker-width: 40; marker-height: 40; }"
             //return 1;
             /*return {
               sql_values_string: munzee_api_values,
@@ -187,16 +181,6 @@
             };*/
           }
         });
-
-        sort_all_pin_images = _.sortBy(all_pin_images, function (file) {return file});
-        unique_pin_images = _.uniq(sort_all_pin_images, isSorted=true);
-        console.log(unique_pin_images);
-
-        $.each(unique_pin_images, function(i, img) {
-          munzee_cartocss += "\n#cartodb_germany[pin_image=\"" + img + "\"]{ marker-file: url(https://munzee.global.ssl.fastly.net/images/pins/" + img + "); marker-width: 40; marker-height: 40; }"
-        });
-        console.log(munzee_cartocss);
-
         //with_sql_query += ")";
         $.post('https://munzee-admin.cartodb.com/api/v2/sql',{
           q: with_sql_query,
