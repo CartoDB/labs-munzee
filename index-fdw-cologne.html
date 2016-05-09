@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head profile="http://www.w3.org/2005/10/profile">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>CartoDB Bootstrap Starter Template</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.14/themes/css/cartodb.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+  </head>
+
+  <style>
+    html, body, #container {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      padding-top: 50px;
+    }
+
+    #map {
+      width: auto;
+      height: 100%;
+      box-shadow: 0 0 10px rgba(0,0,0,0.55);
+    }
+
+    #sidebar {
+      width: 300px;
+      height: 100%;
+      max-width: 100%;
+      float: left;
+      -webkit-transition: all 0.25s ease-out;
+      -moz-transition: all 0.25s ease-out;
+      transition: all 0.25s ease-out;
+    }
+
+    .navbar .navbar-brand {
+      font-weight: bold;
+      font-size: 25px;
+      color: #FFFFFF;
+    }
+
+    .navbar {
+      background-image: linear-gradient(to bottom, #2b6988 0%, #1f4b61 100%);
+    }
+
+    .navbar-inverse .navbar-nav>li>a {
+      color: #fff;
+    }
+  </style>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <div class="navbar-icon-container">
+            <a href="#" class="navbar-icon pull-right visible-xs" id="nav-btn"><i class="fa fa-bars fa-lg white"></i></a>
+            <a href="#" class="navbar-icon pull-right visible-xs" id="sidebar-toggle-btn"><i class="fa fa-search fa-lg white"></i></a>
+          </div>
+          <a class="navbar-brand" href="#">CartoDB Template</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <form class="navbar-form navbar-right" role="search">
+            <div class="form-group has-feedback">
+                <span class="twitter-typeahead" style="position: static; display: block; direction: ltr;"><input id="searchbox" type="text" placeholder="Search" class="form-control tt-input" autocomplete="off" spellcheck="false" dir="auto" style="position: relative; vertical-align: top;"><pre aria-hidden="true" style="position: absolute; visibility: hidden; white-space: pre; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; word-spacing: 0px; letter-spacing: 0px; text-indent: 0px; text-rendering: auto; text-transform: none;"></pre><span class="tt-dropdown-menu" style="position: absolute; top: 100%; left: 0px; z-index: 100; display: none; right: auto;"><div class="tt-dataset-Boroughs"></div><div class="tt-dataset-Theaters"></div><div class="tt-dataset-Museums"></div><div class="tt-dataset-GeoNames"></div></span></span>
+                <span id="searchicon" class="fa fa-search form-control-feedback"></span>
+            </div>
+          </form>
+          <ul class="nav navbar-nav">
+            <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="about-btn"><i class="fa fa-question-circle white"></i>&nbsp;&nbsp;About</a></li>
+            <li class="dropdown">
+              <a id="toolsDrop" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-globe white"></i>&nbsp;&nbsp;Tools <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="full-extent-btn"><i class="fa fa-arrows-alt"></i>&nbsp;&nbsp;Zoom To Full Extent</a></li>
+                <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="legend-btn"><i class="fa fa-picture-o"></i>&nbsp;&nbsp;Show Legend</a></li>
+                <li class="divider hidden-xs"></li>
+                <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="login-btn"><i class="fa fa-user"></i>&nbsp;&nbsp;Login</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" id="downloadDrop" href="#" role="button" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-cloud-download white"></i>&nbsp;&nbsp;Download <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="data/boroughs.geojson" download="boroughs.geojson" target="_blank" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;Boroughs</a></li>
+                  <li><a href="data/subways.geojson" download="subways.geojson" target="_blank" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;Subway Lines</a></li>
+                  <li><a href="data/DOITT_THEATER_01_13SEPT2010.geojson" download="theaters.geojson" target="_blank" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;Theaters</a></li>
+                  <li><a href="data/DOITT_MUSEUM_01_13SEPT2010.geojson" download="museums.geojson" target="_blank" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;Museums</a></li>
+                </ul>
+            </li>
+            <li class="hidden-xs"><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="list-btn"><i class="fa fa-list white"></i>&nbsp;&nbsp;POI List</a></li>
+          </ul>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </div>
+
+    <div id="container">
+      <!--<div id="sidebar">
+        
+      </div>-->
+      <div id="map">
+      </div>
+
+    </div><!-- /.container -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.14/cartodb.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore.js"></script>
+
+    <script>
+      var dataLayer;
+      var sql = new cartodb.SQL({
+        user: 'demo-admin',
+        sql_api_template: 'https://concur.cartodb.solutions/user/demo-admin',
+      });
+      var map = new L.Map('map', { 
+        center: [50.9375,6.9603],
+        zoom: 14
+      });
+
+      L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',{
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+      }).addTo(map);
+    
+      var updateLayer = function () {
+        var bbox = map.getBounds();
+        var mapQuery = "with tmp as (select munzee_id, latitude, longitude, pin_image from munzeetb where longitude1='" + bbox.getWest() + "' and latitude1='" + bbox.getSouth() + "' and longitude2='" + bbox.getEast() + "' and latitude2='" + bbox.getNorth() + "') select munzee_id, st_transform(cdb_latlng(latitude, longitude), 3857) as the_geom_webmercator, pin_image from tmp";
+        var markerQuery = "select distinct pin_image from munzeetb where longitude1='" + bbox.getWest() + "' and latitude1='" + bbox.getSouth() + "' and longitude2='" + bbox.getEast() + "' and latitude2='" + bbox.getNorth() + "'";
+        var munzee_cartocss = "#layer {\
+           marker-fill-opacity: 0.9;\
+           marker-line-color: #FFF;\
+           marker-line-width: 1;\
+           marker-line-opacity: 1;\
+           marker-placement: point;\
+           marker-type: ellipse;\
+           marker-width: 10;\
+           marker-allow-overlap: true;\
+        }";
+
+        sql.execute(markerQuery)
+          .done(function(data) {
+            $.each(data.rows, function (i, marker) {
+              munzee_cartocss += "\n#layer[pin_image=\"" + marker["pin_image"] + "\"]{ marker-file: url(https://munzee.global.ssl.fastly.net/images/pins/" + marker["pin_image"] + "); marker-width: 40; marker-height: 40; }"
+            });
+            if (dataLayer) {
+              dataLayer.setSQL(mapQuery);
+              dataLayer.setCartoCSS(munzee_cartocss);
+            } else {
+              cartodb.createLayer(map, {
+                user_name: 'demo-admin',
+                type: 'cartodb',
+                maps_api_template: 'https://concur.cartodb.solutions/user/demo-admin',
+                sql_api_template: 'https://concur.cartodb.solutions/user/demo-admin',
+                no_cdn: true,
+                sublayers: [{
+                  sql: mapQuery,
+                  cartocss: munzee_cartocss
+                }]
+              })
+              .addTo(map)
+              .done(function (layer) {
+                dataLayer = layer.getSubLayer(0);
+              });
+            }
+          });
+      };
+
+      map.on('moveend', function () {
+        updateLayer();
+      });
+   
+      updateLayer();
+    </script>
+  </body>
+</html>
